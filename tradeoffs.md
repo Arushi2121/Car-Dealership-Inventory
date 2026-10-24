@@ -92,3 +92,21 @@ Each entry records what was chosen, what was not, and what the choice costs. A n
 - **Stretch**: compare tray, deployment.
 - **Why**: The core nine endpoints, the required UI and design quality come first.
 - **Cost**: Fewer extras; each can be added later as a new module.
+
+### 15. Passwords capped at 72 characters
+- **Chosen**: Register rejects passwords longer than 72 characters with a 400.
+- **Alternative**: Accept any length and let bcrypt hash it.
+- **Why**: bcrypt ignores every byte past 72, so two long passwords sharing a 72-byte prefix would both log in. Rejecting is honest; silent truncation is not.
+- **Cost**: Users with very long passphrases must shorten them. A multi-byte character counts as more than one byte, so the real limit is slightly lower for non-ASCII passwords.
+
+### 16. Emails stored lowercased
+- **Chosen**: Emails are trimmed and lowercased on register and login.
+- **Alternative**: Store emails as typed, with a case-insensitive unique index (`citext` or a functional index).
+- **Why**: The same address can't be registered twice in different case, and login works however the user types it, with a plain unique index.
+- **Cost**: The original capitalisation is lost. The seeded admin and demo emails are stored exactly as they appear in config, so they must be written in lowercase there.
+
+### 17. Validated query on res.locals
+- **Chosen**: `validate(schema, 'query')` stores the parsed query on `res.locals.query`.
+- **Alternative**: Overwrite `req.query`, as Express 4 code often does.
+- **Why**: Express 5 makes `req.query` a read-only getter, so assigning to it fails.
+- **Cost**: Controllers read the query from `res.locals.query` rather than `req.query`, which a reader must know.
