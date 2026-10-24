@@ -110,3 +110,27 @@ Each entry records what was chosen, what was not, and what the choice costs. A n
 - **Alternative**: Overwrite `req.query`, as Express 4 code often does.
 - **Why**: Express 5 makes `req.query` a read-only getter, so assigning to it fails.
 - **Cost**: Controllers read the query from `res.locals.query` rather than `req.query`, which a reader must know.
+
+### 18. Fixed category list
+- **Chosen**: A `Category` enum (SEDAN, SUV, HATCHBACK, COUPE, CONVERTIBLE, PICKUP, VAN) in the database and in validation.
+- **Alternative**: Free-text category.
+- **Why**: Filters stay clean and exact, and typos such as "Seden" can't create a category of their own.
+- **Cost**: A new category needs a migration and a deploy.
+
+### 19. Price capped at the Postgres Int limit
+- **Chosen**: Price is an `Int`, validated to at most 2147483647 cents (about $21.4M).
+- **Alternative**: `BigInt` or `Decimal`.
+- **Why**: No car in a dealership inventory comes near the cap, and `Int` serialises to JSON as a plain number. `BigInt` needs custom JSON handling everywhere.
+- **Cost**: A vehicle priced above about $21.4M can't be stored.
+
+### 20. Malformed ids return 404
+- **Chosen**: An id that isn't a valid UUID returns 404 `VEHICLE_NOT_FOUND`, the same as an unknown id.
+- **Alternative**: Validate the id format and return 400.
+- **Why**: To the client, both mean "no such vehicle". One rule is simpler to explain and test.
+- **Cost**: A client with a broken id gets "not found" rather than a hint that the id itself is malformed.
+
+### 21. Update and delete in one query
+- **Chosen**: Call Prisma's `update` or `delete` directly, and treat its not-found error (P2025) as null.
+- **Alternative**: Read the vehicle first, then update or delete it.
+- **Why**: One round trip instead of two, which matters on a hosted database, and no gap between the read and the write.
+- **Cost**: The repository depends on a Prisma error code to detect a missing row.
