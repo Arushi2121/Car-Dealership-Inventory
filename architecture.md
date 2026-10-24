@@ -59,7 +59,7 @@ backend/
 │       └── deal-rating/
 └── tests/
     ├── setup.ts                test database guard + reset between tests
-    └── helpers/                createTestApp, makeUser, makeToken, makeVehicle
+    └── helpers/                createTestApp, createUserWithToken, makeVehicle, resetDatabase
 ```
 
 ### Inside a module
