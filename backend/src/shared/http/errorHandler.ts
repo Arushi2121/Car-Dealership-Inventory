@@ -3,10 +3,7 @@ import { AppError } from '../errors.js';
 
 function isJsonParseError(err: unknown): boolean {
   return (
-    typeof err === 'object' &&
-    err !== null &&
-    'type' in err &&
-    err.type === 'entity.parse.failed'
+    typeof err === 'object' && err !== null && 'type' in err && err.type === 'entity.parse.failed'
   );
 }
 

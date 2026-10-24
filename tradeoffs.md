@@ -102,8 +102,8 @@ Each entry records what was chosen, what was not, and what the choice costs. A n
 ### 16. Emails stored lowercased
 - **Chosen**: Emails are trimmed and lowercased on register and login.
 - **Alternative**: Store emails as typed, with a case-insensitive unique index (`citext` or a functional index).
-- **Why**: The same address can't be registered twice in different case, and login works however the user types it, with a plain unique index.
-- **Cost**: The original capitalisation is lost. The seeded admin and demo emails are stored exactly as they appear in config, so they must be written in lowercase there.
+- **Why**: The same address can't be registered twice in different case, and login works however the user types it, with a plain unique index. The admin and demo emails in config are lowercased the same way, so the seeded accounts always match.
+- **Cost**: The original capitalisation is lost.
 
 ### 17. Validated query on res.locals
 - **Chosen**: `validate(schema, 'query')` stores the parsed query on `res.locals.query`.

@@ -34,7 +34,11 @@ describe('validate', () => {
     const res = { locals: {} as Record<string, unknown> };
     const next = vi.fn();
 
-    validate(querySchema, 'query')(req as unknown as Request, res as Response, next as NextFunction);
+    validate(querySchema, 'query')(
+      req as unknown as Request,
+      res as Response,
+      next as NextFunction,
+    );
 
     expect(res.locals.query).toEqual({ make: 'Toyota', minPrice: 1000 });
     expect(req.query).toBe(query);

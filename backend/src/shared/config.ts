@@ -1,13 +1,16 @@
 import { z } from 'zod';
 
+// Lowercased like login input, so the seeded accounts can always sign in.
+const email = z.string().trim().toLowerCase().pipe(z.email());
+
 const configSchema = z.object({
   DATABASE_URL: z.url(),
   PORT: z.coerce.number().int().positive(),
   JWT_SECRET: z.string().min(1),
   JWT_EXPIRES_IN: z.string().min(1),
-  ADMIN_EMAIL: z.email(),
+  ADMIN_EMAIL: email,
   ADMIN_PASSWORD: z.string().min(1),
-  DEMO_USER_EMAIL: z.email(),
+  DEMO_USER_EMAIL: email,
   DEMO_USER_PASSWORD: z.string().min(1),
   CORS_ORIGIN: z.string().min(1),
 });
