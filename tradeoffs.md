@@ -158,3 +158,27 @@ Each entry records what was chosen, what was not, and what the choice costs. A n
 - **Alternative**: Raw SQL `UPDATE ... RETURNING`.
 - **Why**: Stays within Prisma's typed API; `updateMany` returns only a count.
 - **Cost**: The returned stock can lag a simultaneous purchase by one read. Correctness comes from the conditional update, not from the read.
+
+### 26. Deal rating uses the category median
+- **Chosen**: Each car is compared with the median price of its own category, including itself.
+- **Alternative**: The mean of that category.
+- **Why**: The median resists one outlier price better than the mean.
+- **Cost**: In a category of three, the middle car is always exactly the median, so it is always rated fair.
+
+### 27. No rating below 3 comparables
+- **Chosen**: A category with fewer than three vehicles gets a null rating.
+- **Alternative**: Rate from two cars, or from the whole inventory.
+- **Why**: Two cars can't define a market.
+- **Cost**: Thin categories such as coupes and convertibles show no badge until a third one is stocked.
+
+### 28. Demo seed only fills an empty inventory
+- **Chosen**: `seedVehicles` inserts the sample list only when the vehicle count is 0.
+- **Alternative**: Upsert on every run, as the user seed does.
+- **Why**: Rerunning never duplicates or overwrites admin edits.
+- **Cost**: Editing the sample list does nothing to a database that already has cars. The table has to be emptied to reseed.
+
+### 29. Percentages round half away from zero
+- **Chosen**: 6.5 rounds to 7 and -6.5 rounds to -7.
+- **Alternative**: `Math.round`, which sends -6.5 to -6.
+- **Why**: A car 6.5% below the median shows -7%, mirroring +7% above it.
+- **Cost**: Negative halves differ from JavaScript's usual `Math.round`.

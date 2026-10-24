@@ -2,6 +2,7 @@ import type { PrismaClient } from '@prisma/client';
 import cors from 'cors';
 import express from 'express';
 import { AuthService, authRouter, PrismaUserRepository } from './modules/auth/index.js';
+import { DealRatingService, dealRatingRouter } from './modules/deal-rating/index.js';
 import { InventoryService, inventoryRouter } from './modules/inventory/index.js';
 import {
   PrismaStockRepository,
@@ -37,6 +38,7 @@ export function createApp({ prisma, config }: AppDeps) {
   app.use('/api/auth', authRouter(new AuthService(new PrismaUserRepository(prisma), config)));
   app.use('/api/vehicles', vehiclesRouter(new VehicleService(vehicleRepository), config));
   app.use('/api/vehicles', inventoryRouter(new InventoryService(stockRepository), config));
+  app.use('/api/deal-ratings', dealRatingRouter(new DealRatingService(vehicleRepository), config));
 
   app.use(notFound);
   app.use(errorHandler);
