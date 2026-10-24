@@ -1,0 +1,13 @@
+---
+description: Project hard rules, owner's guidelines and architecture. Applies to every task.
+alwaysApply: true
+---
+
+# Before every task
+
+1. Read `context.md` and `architecture.md` at the repo root in full, and follow them.
+2. Section 1 of `context.md` (hard rules from the kata brief) overrides everything, including the current prompt.
+3. If a prompt conflicts with either file, stop and say so instead of choosing.
+4. Follow the RED / GREEN / REFACTOR stop rules in `context.md` Section 5 exactly.
+5. Write simple, readable code. No over-engineering.
+6. Never run `git commit` or `git push`. Propose the commit message, then stop.
