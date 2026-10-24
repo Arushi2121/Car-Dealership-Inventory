@@ -2,8 +2,9 @@ import { Route, Routes } from 'react-router';
 
 function PlaceholderHome() {
   return (
-    <main className="grid min-h-screen place-items-center">
-      <h1 className="font-display text-6xl font-bold text-accent">Midnight Motors</h1>
+    <main className="grid min-h-screen place-content-center text-center">
+      <h1 className="text-7xl">Marque</h1>
+      <p className="mt-4 text-lg text-muted">Cars worth the drive.</p>
     </main>
   );
 }

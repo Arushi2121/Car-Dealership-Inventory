@@ -182,3 +182,15 @@ Each entry records what was chosen, what was not, and what the choice costs. A n
 - **Alternative**: `Math.round`, which sends -6.5 to -6.
 - **Why**: A car 6.5% below the median shows -7%, mirroring +7% above it.
 - **Cost**: Negative halves differ from JavaScript's usual `Math.round`.
+
+### 30. Body-style photos instead of per-car photos
+- **Chosen**: Eight self-hosted, Unsplash-licensed images (a hero plus one per category) cover every car. Admins can still set an image URL on a single car.
+- **Alternative**: A unique photo for every car.
+- **Why**: Every card has a real photo from day one, with clear licensing and no hotlinking.
+- **Cost**: Cars of the same body style share an image.
+
+### 31. Fonts from Google Fonts
+- **Chosen**: Sora and Inter, loaded from Google Fonts.
+- **Alternative**: Self-host the font files, or use system fonts only.
+- **Why**: Both are open-licensed and load in one line, with `display=swap` so text shows immediately.
+- **Cost**: A network dependency on Google's servers. Offline, the page falls back to system fonts.

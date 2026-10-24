@@ -74,6 +74,8 @@ If a prompt conflicts with anything above it, **stop and flag the conflict**. Ne
 - **Clean, understandable code. No over-engineering.** Prefer the obvious solution a reviewer reads in one pass.
 - **Every feature's code is kept separate**, so changes never break other features (see `architecture.md`).
 - **Visually striking design** by professional standards, inspired by the patterns of leading dealership sites. Never copy their designs, copy text or images.
+- **Product name**: Marque.
+- **Design direction**: light editorial: off-white canvas, white rounded cards, near-black type, one amber accent, pill buttons, photo-led. Inspired by the patterns of premium automotive sites; never copy their layouts, images or copy.
 - Cursor builds; Claude writes the block prompts.
 - Maintain: `architecture.md`, `tradeoffs.md` (add an entry for every questionable decision), README, `PROMPTS.md`.
 
