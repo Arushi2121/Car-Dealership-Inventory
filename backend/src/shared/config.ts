@@ -7,6 +7,8 @@ const configSchema = z.object({
   JWT_EXPIRES_IN: z.string().min(1),
   ADMIN_EMAIL: z.email(),
   ADMIN_PASSWORD: z.string().min(1),
+  DEMO_USER_EMAIL: z.email(),
+  DEMO_USER_PASSWORD: z.string().min(1),
   CORS_ORIGIN: z.string().min(1),
 });
 
