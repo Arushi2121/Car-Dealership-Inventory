@@ -88,7 +88,7 @@ modules/vehicles/
 | --- | --- | --- |
 | auth | shared | |
 | vehicles | shared | |
-| inventory | vehicles (repository interface) | Stock lives on the Vehicle table, which vehicles owns. Inventory holds the purchase and restock rules; vehicles holds the stock SQL. |
+| inventory | vehicles (StockRepository interface) | Stock lives on the Vehicle table, which vehicles owns. Inventory holds the purchase and restock rules; vehicles holds the stock SQL. |
 | deal-rating | vehicles (repository interface) | Reads prices to compare |
 
 ### Wiring example
@@ -103,7 +103,7 @@ export function createApp({ prisma, config }: AppDeps) {
 
   app.use('/api/auth', authRouter(new AuthService(new PrismaUserRepository(prisma), config)));
   app.use('/api/vehicles', vehiclesRouter(new VehicleService(vehicleRepo), config));
-  app.use('/api/vehicles', inventoryRouter(new InventoryService(vehicleRepo), config));
+  app.use('/api/vehicles', inventoryRouter(new InventoryService(new PrismaStockRepository(prisma)), config));
   app.use('/api/deal-ratings', dealRatingRouter(new DealRatingService(vehicleRepo), config));
 
   app.use(notFound);

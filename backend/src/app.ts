@@ -2,7 +2,9 @@ import type { PrismaClient } from '@prisma/client';
 import cors from 'cors';
 import express from 'express';
 import { AuthService, authRouter, PrismaUserRepository } from './modules/auth/index.js';
+import { InventoryService, inventoryRouter } from './modules/inventory/index.js';
 import {
+  PrismaStockRepository,
   PrismaVehicleRepository,
   VehicleService,
   vehiclesRouter,
@@ -28,11 +30,13 @@ export function createApp({ prisma, config }: AppDeps) {
     res.json({ status: 'ok' });
   });
 
-  // One repository instance, shared by every module that reads or writes the Vehicle table.
+  // The Vehicle table is reached through two narrow repositories: catalogue and stock.
   const vehicleRepository = new PrismaVehicleRepository(prisma);
+  const stockRepository = new PrismaStockRepository(prisma);
 
   app.use('/api/auth', authRouter(new AuthService(new PrismaUserRepository(prisma), config)));
   app.use('/api/vehicles', vehiclesRouter(new VehicleService(vehicleRepository), config));
+  app.use('/api/vehicles', inventoryRouter(new InventoryService(stockRepository), config));
 
   app.use(notFound);
   app.use(errorHandler);

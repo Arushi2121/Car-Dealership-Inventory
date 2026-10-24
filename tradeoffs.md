@@ -134,3 +134,27 @@ Each entry records what was chosen, what was not, and what the choice costs. A n
 - **Alternative**: Read the vehicle first, then update or delete it.
 - **Why**: One round trip instead of two, which matters on a hosted database, and no gap between the read and the write.
 - **Cost**: The repository depends on a Prisma error code to detect a missing row.
+
+### 22. Separate StockRepository
+- **Chosen**: A `StockRepository` interface (`findById`, `decrementIfAvailable`, `increment`) next to `VehicleRepository` in the vehicles module.
+- **Alternative**: Add the stock methods to `VehicleRepository`.
+- **Why**: Interface segregation. Inventory sees only stock operations, and the existing `VehicleRepository` fakes stay valid without stubbing methods they never use.
+- **Cost**: Two repository classes over the same table.
+
+### 23. Restock capped at 10,000 per request
+- **Chosen**: Restock accepts 1 to 10000.
+- **Alternative**: Any positive integer up to the Postgres Int limit.
+- **Why**: Keeps quantity well inside the Postgres Int limit, so repeated restocks can't overflow the column, and no dealership restocks more than that at once.
+- **Cost**: A very large delivery needs more than one request.
+
+### 24. Purchase quantity capped at the Postgres Int limit
+- **Chosen**: Purchase accepts 1 to 2147483647.
+- **Alternative**: A small business cap, such as 10 per order.
+- **Why**: The real limit is the stock itself, which the conditional update enforces. The cap only rejects absurd input before it reaches the database.
+- **Cost**: None in practice. A huge quantity gets 409 OUT_OF_STOCK, not a friendlier "too many" message.
+
+### 25. Purchase re-reads the vehicle after the update
+- **Chosen**: After the conditional decrement, a second query reads the vehicle to return it (and, on failure, to tell 404 from 409).
+- **Alternative**: Raw SQL `UPDATE ... RETURNING`.
+- **Why**: Stays within Prisma's typed API; `updateMany` returns only a count.
+- **Cost**: The returned stock can lag a simultaneous purchase by one read. Correctness comes from the conditional update, not from the read.
