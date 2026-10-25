@@ -1,9 +1,10 @@
 import { Route, Routes } from 'react-router';
 import { GuestOnly, LoginPage, RegisterPage, RequireAuth } from '../features/auth';
 import { LandingPage } from '../features/landing';
+import { ShowroomPage } from '../features/vehicles';
+import { AppHeader } from './layouts/AppHeader';
 import { SiteHeader } from './layouts/SiteHeader';
 import { NotFoundPage } from './NotFoundPage';
-import { ShowroomPlaceholder } from './ShowroomPlaceholder';
 import { SlowStartBanner } from './SlowStartBanner';
 import { StyleguidePage } from './StyleguidePage';
 
@@ -41,7 +42,8 @@ export function App() {
           path="/showroom"
           element={
             <RequireAuth>
-              <ShowroomPlaceholder />
+              <AppHeader />
+              <ShowroomPage />
             </RequireAuth>
           }
         />

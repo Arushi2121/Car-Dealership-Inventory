@@ -22,6 +22,7 @@
   /* Used with motion-safe: so they never run under prefers-reduced-motion. */
   --animate-rise-in: rise-in 700ms ease-out both;
   --animate-fade-in: fade-in 600ms ease-out both;
+  --animate-slide-in: slide-in 300ms ease-out both;
 
   @keyframes rise-in {
     from {
@@ -33,6 +34,12 @@
   @keyframes fade-in {
     from {
       opacity: 0;
+    }
+  }
+
+  @keyframes slide-in {
+    from {
+      transform: translateX(100%);
     }
   }
 }

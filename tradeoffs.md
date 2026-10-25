@@ -236,3 +236,27 @@ Each entry records what was chosen, what was not, and what the choice costs. A n
 - **Alternative**: A second Supabase project for production.
 - **Why**: Isolated from dev and test data, with no second project to manage.
 - **Cost**: Dev, test and prod share one project's limits. The seed script refuses `schema=test`, but a connection string pointed at the wrong schema still reaches the same database.
+
+### 39. Filters in the URL
+- **Chosen**: Search, body style, price, stock, sort and the open car live in the query string, read with `readFilters` and written with `writeFilters`.
+- **Alternative**: Component state.
+- **Why**: A filtered view can be shared or bookmarked, the landing page's `?category=` links work, and Back and Forward step through filter changes and close the details panel.
+- **Cost**: A little parsing code, and every bad or hand-edited param needs a sensible fallback.
+
+### 40. Sort and in-stock filtering on the client
+- **Chosen**: The API filters by text, body style and price; the browser hides out-of-stock cars and sorts.
+- **Alternative**: Add sort and stock parameters to the search endpoint.
+- **Why**: Instant, with no extra endpoints or requests. The whole inventory fits comfortably in one response.
+- **Cost**: Would need to move to the server, with paging, if the inventory grew to thousands of cars.
+
+### 41. Two-click purchase
+- **Chosen**: The first click turns the button into "Confirm · <price>" for 4 seconds; the second click buys.
+- **Alternative**: A confirmation modal, or buy on the first click.
+- **Why**: Prevents accidental purchases without interrupting the page with a modal.
+- **Cost**: A user who waits more than 4 seconds has to click twice again. The confirm step is less prominent than a modal.
+
+### 42. Illustrative EMI terms
+- **Chosen**: Cards show "from $X/mo" at fixed defaults (10% down, 7.5% APR, 60 months). The calculator lets the user change them and says "Illustrative estimate, not a finance offer."
+- **Alternative**: Real lender rates, or no monthly figure.
+- **Why**: Monthly cost is how many buyers compare cars. Fixed, labelled defaults keep it honest and need no lender integration.
+- **Cost**: The figure is not a quote, and the defaults may not match any real offer.

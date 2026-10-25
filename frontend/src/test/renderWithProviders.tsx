@@ -3,6 +3,7 @@ import { render } from '@testing-library/react';
 import type { ReactElement, ReactNode } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import { AuthProvider } from '../features/auth/AuthProvider';
+import { ToastProvider } from '../shared/ui/Toast';
 
 type RenderOptions = {
   initialEntries?: string[];
@@ -19,14 +20,16 @@ export function renderWithProviders(
   return render(
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <MemoryRouter initialEntries={initialEntries}>
-          <Routes>
-            {routes.map((route) => (
-              <Route key={route.path} path={route.path} element={route.element} />
-            ))}
-            <Route path="*" element={ui} />
-          </Routes>
-        </MemoryRouter>
+        <ToastProvider>
+          <MemoryRouter initialEntries={initialEntries}>
+            <Routes>
+              {routes.map((route) => (
+                <Route key={route.path} path={route.path} element={route.element} />
+              ))}
+              <Route path="*" element={ui} />
+            </Routes>
+          </MemoryRouter>
+        </ToastProvider>
       </AuthProvider>
     </QueryClientProvider>,
   );
