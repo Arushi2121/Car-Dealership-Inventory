@@ -3,6 +3,14 @@ import { z } from 'zod';
 // Lowercased like login input, so the seeded accounts can always sign in.
 const email = z.string().trim().toLowerCase().pipe(z.email());
 
+/** Comma-separated origins, so one env var can allow the local app and the deployed site. */
+function parseCorsOrigins(value: string): string[] {
+  return value
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter((origin) => origin.length > 0);
+}
+
 const configSchema = z.object({
   DATABASE_URL: z.url(),
   PORT: z.coerce.number().int().positive(),
@@ -12,7 +20,7 @@ const configSchema = z.object({
   ADMIN_PASSWORD: z.string().min(1),
   DEMO_USER_EMAIL: email,
   DEMO_USER_PASSWORD: z.string().min(1),
-  CORS_ORIGIN: z.string().min(1),
+  CORS_ORIGIN: z.string().min(1).transform(parseCorsOrigins),
 });
 
 export type Config = z.infer<typeof configSchema>;
@@ -32,4 +40,10 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
   }
 
   return result.data;
+}
+
+/** The `schema` query param only, so logs never include the connection string. */
+export function databaseSchema(databaseUrl: string): string {
+  const schema = new URL(databaseUrl).searchParams.get('schema');
+  return schema || '(none)';
 }
