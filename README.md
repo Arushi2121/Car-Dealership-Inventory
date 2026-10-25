@@ -14,7 +14,7 @@ Marque is a full-stack car dealership inventory app, built test-first. Customers
 | --- | --- |
 | ![Landing page](docs/screenshots/landing.png) | ![Login page](docs/screenshots/login.png) |
 | ![Showroom](docs/screenshots/showroom.png) | ![Vehicle details](docs/screenshots/detail.png) |
-| ![Admin controls](docs/screenshots/admin.png) | ![Mobile view](docs/screenshots/mobile.png) |
+| ![Admin controls](docs/screenshots/admin.png) | ![Mobile view](docs/screenshots/mobile.jpeg) |
 
 ## Features
 
