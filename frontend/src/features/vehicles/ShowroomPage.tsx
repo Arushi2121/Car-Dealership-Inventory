@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { useSearchParams } from 'react-router';
 import { bodyStyleNames, categories, type Category } from '../../shared/lib/categories';
 import { Button } from '../../shared/ui';
@@ -7,6 +8,7 @@ import { readFilters, writeFilters, type Filters } from './filters';
 import { useVehicles } from './useVehicles';
 import { VehicleCard } from './VehicleCard';
 import { VehicleDetailPanel } from './VehicleDetailPanel';
+import type { Vehicle } from './types';
 
 const SKELETON_CARDS = 8;
 
@@ -16,7 +18,14 @@ function plural(count: number, word: string): string {
   return `${count} ${word}${count === 1 ? '' : 's'}`;
 }
 
-export function ShowroomPage() {
+type ShowroomPageProps = {
+  /** Shown beside the page title. */
+  headerActions?: ReactNode;
+  /** Extra controls for one car, shown in its card above Purchase. */
+  renderCardActions?: (vehicle: Vehicle) => ReactNode;
+};
+
+export function ShowroomPage({ headerActions, renderCardActions }: ShowroomPageProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const filters = readFilters(searchParams);
   const carId = searchParams.get('car');
@@ -58,7 +67,10 @@ export function ShowroomPage() {
   return (
     <main className="mx-auto max-w-7xl px-6 pb-24">
       <div className="space-y-4 pt-12 pb-6">
-        <h1 className="text-4xl md:text-5xl">The showroom</h1>
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <h1 className="text-4xl md:text-5xl">The showroom</h1>
+          {headerActions}
+        </div>
         {!isPending && !isError && (
           <p className="text-muted">
             {plural(vehicles.length, 'car')} · {plural(bodyStyleCount, 'body style')} ·{' '}
@@ -130,6 +142,7 @@ export function ShowroomPage() {
                 deal={ratings.get(vehicle.id)}
                 index={index}
                 onViewDetails={setCar}
+                actions={renderCardActions?.(vehicle)}
               />
             ))}
           </div>

@@ -164,7 +164,7 @@ The fake repositories are test doubles for unit tests. The running app always us
 
 ```
 frontend/src/
-├── app/                App.tsx (routes), providers.tsx, layouts/
+├── app/                App.tsx (routes), providers.tsx, ShowroomRoute, layouts/
 │   └── layouts/        SiteHeader, AppHeader
 ├── shared/
 │   ├── ui/             Button, Input, Select, Card, Badge, Dialog, Skeleton (design system primitives)
@@ -175,11 +175,13 @@ frontend/src/
 │   ├── vehicles/       ShowroomPage, VehicleCard, SearchBar, hooks, api
 │   ├── deals/          DealBadge, useDealRatings
 │   ├── finance/        emi.ts (pure function), EmiCalculator
-│   └── admin/          VehicleForm, RestockDialog, DeleteDialog
+│   └── admin/          VehicleFormDialog, RestockDialog, DeleteVehicleDialog, AdminCardActions
 └── styles/index.css    Tailwind v4 with design tokens in @theme
 ```
 
 The same rules as the backend apply: features import `shared/` and other features only through their `index.ts`.
+
+Admin UI is plugged into the showroom through props, composed in `app/ShowroomRoute.tsx`, so the vehicles feature never depends on admin.
 
 ### State and data
 

@@ -1,4 +1,5 @@
 import { useId } from 'react';
+import type { ReactNode } from 'react';
 import { formatPrice } from '../../shared/lib/format';
 import { Button, Card, CarImage } from '../../shared/ui';
 import { DealBadge, type DealRating } from '../deals';
@@ -15,6 +16,7 @@ type VehicleCardProps = {
   deal: DealRating | undefined;
   index: number;
   onViewDetails: (id: string) => void;
+  actions?: ReactNode;
 };
 
 function StockLabel({ quantity }: { quantity: number }) {
@@ -26,7 +28,7 @@ function StockLabel({ quantity }: { quantity: number }) {
   return null;
 }
 
-export function VehicleCard({ vehicle, deal, index, onViewDetails }: VehicleCardProps) {
+export function VehicleCard({ vehicle, deal, index, onViewDetails, actions }: VehicleCardProps) {
   const makeId = useId();
   const modelId = useId();
   const { make, model, category, price, quantity, imageUrl } = vehicle;
@@ -74,6 +76,7 @@ export function VehicleCard({ vehicle, deal, index, onViewDetails }: VehicleCard
               for {make} {model}
             </span>
           </Button>
+          {actions}
           <PurchaseButton vehicle={vehicle} className="w-full" />
         </div>
       </div>

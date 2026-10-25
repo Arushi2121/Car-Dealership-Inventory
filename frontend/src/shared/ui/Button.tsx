@@ -1,7 +1,7 @@
 import type { ButtonHTMLAttributes } from 'react';
 
-type Variant = 'primary' | 'dark' | 'ghost';
-type Size = 'md' | 'lg';
+type Variant = 'primary' | 'dark' | 'ghost' | 'danger';
+type Size = 'sm' | 'md' | 'lg';
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: Variant;
@@ -13,9 +13,11 @@ const variantClasses = {
   primary: 'bg-accent text-accent-fg enabled:hover:bg-accent/90',
   dark: 'bg-ink text-surface enabled:hover:bg-ink/90',
   ghost: 'bg-transparent border border-ink/20 text-ink enabled:hover:bg-raised',
+  danger: 'bg-danger text-surface enabled:hover:bg-danger/90',
 };
 
 const sizeClasses = {
+  sm: 'h-8 px-3 text-xs',
   md: 'h-10 px-5 text-sm',
   lg: 'h-12 px-7 text-base',
 };

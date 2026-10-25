@@ -1,10 +1,10 @@
 import { Route, Routes } from 'react-router';
 import { GuestOnly, LoginPage, RegisterPage, RequireAuth } from '../features/auth';
 import { LandingPage } from '../features/landing';
-import { ShowroomPage } from '../features/vehicles';
 import { AppHeader } from './layouts/AppHeader';
 import { SiteHeader } from './layouts/SiteHeader';
 import { NotFoundPage } from './NotFoundPage';
+import { ShowroomRoute } from './ShowroomRoute';
 import { SlowStartBanner } from './SlowStartBanner';
 import { StyleguidePage } from './StyleguidePage';
 
@@ -43,7 +43,7 @@ export function App() {
           element={
             <RequireAuth>
               <AppHeader />
-              <ShowroomPage />
+              <ShowroomRoute />
             </RequireAuth>
           }
         />

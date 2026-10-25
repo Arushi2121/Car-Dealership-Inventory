@@ -3,6 +3,7 @@ export { Button, buttonClasses } from './Button';
 export { Card } from './Card';
 export { CarImage } from './CarImage';
 export type { Category } from './CarImage';
+export { Dialog } from './Dialog';
 export { HeroPhoto } from './HeroPhoto';
 export { Input } from './Input';
 export { ToastProvider, useToast } from './Toast';

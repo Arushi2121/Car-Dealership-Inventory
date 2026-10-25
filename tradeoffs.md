@@ -260,3 +260,27 @@ Each entry records what was chosen, what was not, and what the choice costs. A n
 - **Alternative**: Real lender rates, or no monthly figure.
 - **Why**: Monthly cost is how many buyers compare cars. Fixed, labelled defaults keep it honest and need no lender integration.
 - **Cost**: The figure is not a quote, and the defaults may not match any real offer.
+
+### 43. Admin controls inside the showroom
+- **Chosen**: Admins see Add vehicle in the showroom header and Edit, Restock and Delete on each card, plugged in through `ShowroomPage` props by `app/ShowroomRoute.tsx`.
+- **Alternative**: A separate admin site or `/admin` table view.
+- **Why**: One place to see and manage stock, with no second set of pages to build. The server enforces every admin rule regardless of what the UI shows.
+- **Cost**: Admin controls make each card busier for admins, and there is no bulk editing.
+
+### 44. Client-side validation mirrors the server
+- **Chosen**: The add, edit and restock forms check the same limits as the backend's Zod schemas (names 1 to 60 characters, whole-dollar prices from $1, quantity and restock ranges, a valid image URL) before sending.
+- **Alternative**: Send everything and show only the server's errors.
+- **Why**: Faster feedback, shown next to the field. The server stays the authority, and its errors still appear in the form.
+- **Cost**: The limits live in two places, and changing one without the other lets the server's message show instead of the inline one.
+
+### 45. Edit sends only changed fields
+- **Chosen**: `PUT /api/vehicles/:id` receives only the fields the admin changed; an unchanged form closes without a request.
+- **Alternative**: Send the whole form every time.
+- **Why**: Smaller requests, and no accidental overwrite of a field another admin changed meanwhile.
+- **Cost**: An image URL can be set or replaced but not cleared, because the API accepts no empty value for it.
+
+### 46. Production build excludes tests
+- **Chosen**: `tsconfig.app.json` excludes `__tests__` and `src/test`; a separate `tsconfig.test.json` covers them. `npm run build` checks only the app and node projects, while `npm run typecheck` (`tsc -b` on the root config) checks all three.
+- **Alternative**: One project that type-checks tests as part of every build.
+- **Why**: A red commit's tests import modules that don't exist yet, which failed every Vercel deploy of a red commit. Now red commits still deploy, and tests are still type-checked by `npm run typecheck`.
+- **Cost**: A type error in a test no longer blocks a deploy; it shows up only in `npm run typecheck` and in the test run.
