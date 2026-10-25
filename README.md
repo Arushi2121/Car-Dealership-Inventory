@@ -64,6 +64,10 @@ _Completed in Block 12._
 
 _Completed in Block 12._
 
+## Deployment
+
+The hosted API runs on Render's free tier, which sleeps when idle. The first request after that can take up to a minute. The app shows a banner while the server wakes. The manual steps are in [docs/deployment.md](docs/deployment.md).
+
 ## My AI Usage
 
 _Completed in Block 12._

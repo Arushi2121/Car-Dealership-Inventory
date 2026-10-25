@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { bodyStyleNames, type Category } from '../lib/categories';
 
-export type Category = 'SEDAN' | 'SUV' | 'HATCHBACK' | 'COUPE' | 'CONVERTIBLE' | 'PICKUP' | 'VAN';
+export type { Category };
 
 type CarImageProps = {
   make: string;
@@ -8,16 +9,6 @@ type CarImageProps = {
   category: Category;
   imageUrl?: string;
   className?: string;
-};
-
-const bodyStyleNames: Record<Category, string> = {
-  SEDAN: 'Sedan',
-  SUV: 'SUV',
-  HATCHBACK: 'Hatchback',
-  COUPE: 'Coupe',
-  CONVERTIBLE: 'Convertible',
-  PICKUP: 'Pickup',
-  VAN: 'Van',
 };
 
 /** A car photo: its own image, else its body-style photo, else a labelled placeholder. */

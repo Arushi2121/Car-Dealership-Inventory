@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw';
 import { server } from '../../../test/server';
-import { ApiError, apiFetch, setUnauthorizedHandler } from '../api';
+import { ApiError, apiFetch, setSlowStartHandler, setUnauthorizedHandler } from '../api';
 import { setToken } from '../tokenStore';
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -17,6 +17,7 @@ async function catchError(promise: Promise<unknown>): Promise<unknown> {
 afterEach(() => {
   localStorage.clear();
   setUnauthorizedHandler(() => {});
+  setSlowStartHandler(() => {});
 });
 
 describe('apiFetch', () => {
@@ -131,5 +132,40 @@ describe('apiFetch', () => {
       code: 'NETWORK_ERROR',
       message: 'Could not reach the server',
     });
+  });
+
+  it('calls the slow-start handler when a request takes longer than 4 seconds', async () => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
+    const onSlowStart = vi.fn();
+    setSlowStartHandler(onSlowStart);
+
+    let resolveFetch: (response: Response) => void = () => {};
+    vi.stubGlobal(
+      'fetch',
+      () =>
+        new Promise<Response>((resolve) => {
+          resolveFetch = resolve;
+        }),
+    );
+
+    const pending = apiFetch<unknown[]>('/api/vehicles');
+
+    try {
+      await vi.advanceTimersByTimeAsync(3999);
+      expect(onSlowStart).not.toHaveBeenCalled();
+
+      await vi.advanceTimersByTimeAsync(1);
+      expect(onSlowStart).toHaveBeenCalledTimes(1);
+      expect(onSlowStart).toHaveBeenCalledWith(true);
+
+      resolveFetch(new Response('[]', { status: 200 }));
+      await expect(pending).resolves.toEqual([]);
+      expect(onSlowStart).toHaveBeenLastCalledWith(false);
+    } finally {
+      resolveFetch(new Response('[]', { status: 200 }));
+      await pending.catch(() => {});
+      vi.unstubAllGlobals();
+      vi.useRealTimers();
+    }
   });
 });

@@ -194,3 +194,45 @@ Each entry records what was chosen, what was not, and what the choice costs. A n
 - **Alternative**: Self-host the font files, or use system fonts only.
 - **Why**: Both are open-licensed and load in one line, with `display=swap` so text shows immediately.
 - **Cost**: A network dependency on Google's servers. Offline, the page falls back to system fonts.
+
+### 32. Body-style fallback images
+- **Chosen**: When a car's photo is missing or fails to load, `CarImage` swaps it for a labelled placeholder (a soft gradient with the body style, e.g. "SUV photo unavailable").
+- **Alternative**: Let the browser show its broken-image icon, or hide the image.
+- **Why**: A broken icon looks like a bug. The placeholder keeps the card's layout and still tells screen-reader users what is missing.
+- **Cost**: A bad image URL set by an admin fails quietly; it is visible only as a placeholder, not as an error.
+
+### 33. Test env set in config
+- **Chosen**: `VITE_API_URL` is fixed to `http://localhost:4000` in the `test.env` block of `vite.config.ts`.
+- **Alternative**: Read it from `frontend/.env` in tests too.
+- **Why**: `.env` is git-ignored, so a fresh clone would fail the API tests. Fixing it in config makes the suite pass anywhere.
+- **Cost**: The test URL is set in two places (`.env.example` and the config), and changing one doesn't change the other.
+
+### 34. User stored beside the token
+- **Chosen**: Login and register return `{ user, token }`; the frontend stores the user as JSON under `marque_user`, next to the token.
+- **Alternative**: A `GET /api/auth/me` endpoint called on every page load.
+- **Why**: The brief's nine endpoints don't include `/me`, and the stored user is only used for display (email, admin links). The server re-checks the role from the token on every request.
+- **Cost**: If an admin's role changed on the server, the stored user would show stale details until the next login. Editing it in devtools only changes what the UI shows, never what the API allows.
+
+### 35. Client reads JWT expiry only
+- **Chosen**: On load, the frontend base64url-decodes the token's payload to read `exp`, and drops an expired session.
+- **Alternative**: Keep every stored token and wait for the first 401.
+- **Why**: A visitor with an expired token is sent straight to login instead of seeing a page that fails on its first request.
+- **Cost**: The signature is not checked in the browser (it can't be without the secret). Only the server verifies tokens; the role always comes from the stored user, never from the decoded token.
+
+### 36. Public demo accounts, including admin
+- **Chosen**: "Try as customer" and "Try as admin" fill demo credentials from `VITE_DEMO_*` env vars.
+- **Alternative**: Hand reviewers the credentials in the README only, or offer no admin demo.
+- **Why**: Reviewers need one-click access to both roles to assess the brief's user and admin UI.
+- **Cost**: The credentials ship in the frontend bundle. On a deployed site anyone can use the admin demo, so its data is disposable: emptying the vehicle table and rerunning the seed restores the inventory (see entry 28), and these credentials must never be reused anywhere real.
+
+### 37. Free-tier hosting
+- **Chosen**: Render's free web service. It sleeps when idle, so the first request is slow. The app shows a waking banner, and the README warns.
+- **Alternative**: A paid always-on host.
+- **Why**: No hosting cost for this project. The banner and the README make the wait expected instead of looking like a failure.
+- **Cost**: After the service sleeps, the first request can take up to a minute.
+
+### 38. Prod as a separate schema in the same Supabase project
+- **Chosen**: A third schema, `prod`, in the existing Supabase project (`?schema=prod`).
+- **Alternative**: A second Supabase project for production.
+- **Why**: Isolated from dev and test data, with no second project to manage.
+- **Cost**: Dev, test and prod share one project's limits. The seed script refuses `schema=test`, but a connection string pointed at the wrong schema still reaches the same database.

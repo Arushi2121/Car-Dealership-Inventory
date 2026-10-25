@@ -1,20 +1,53 @@
 import { Route, Routes } from 'react-router';
+import { GuestOnly, LoginPage, RegisterPage, RequireAuth } from '../features/auth';
+import { LandingPage } from '../features/landing';
+import { SiteHeader } from './layouts/SiteHeader';
+import { NotFoundPage } from './NotFoundPage';
+import { ShowroomPlaceholder } from './ShowroomPlaceholder';
+import { SlowStartBanner } from './SlowStartBanner';
 import { StyleguidePage } from './StyleguidePage';
-
-function PlaceholderHome() {
-  return (
-    <main className="grid min-h-screen place-content-center text-center">
-      <h1 className="text-7xl">Marque</h1>
-      <p className="mt-4 text-lg text-muted">Cars worth the drive.</p>
-    </main>
-  );
-}
 
 export function App() {
   return (
-    <Routes>
-      <Route path="/" element={<PlaceholderHome />} />
-      {import.meta.env.DEV && <Route path="/styleguide" element={<StyleguidePage />} />}
-    </Routes>
+    <>
+      <SlowStartBanner />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <SiteHeader transparent />
+              <LandingPage />
+            </>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <GuestOnly>
+              <LoginPage />
+            </GuestOnly>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <GuestOnly>
+              <RegisterPage />
+            </GuestOnly>
+          }
+        />
+        <Route
+          path="/showroom"
+          element={
+            <RequireAuth>
+              <ShowroomPlaceholder />
+            </RequireAuth>
+          }
+        />
+        {import.meta.env.DEV && <Route path="/styleguide" element={<StyleguidePage />} />}
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </>
   );
 }

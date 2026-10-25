@@ -1,6 +1,7 @@
 node_modules/
 .env
 .env.test
+backend/.env.prod
 coverage/
 dist/
 .DS_Store

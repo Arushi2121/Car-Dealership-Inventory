@@ -18,6 +18,23 @@
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
   --radius-card: 1.5rem;
   --radius-pill: 9999px;
+
+  /* Used with motion-safe: so they never run under prefers-reduced-motion. */
+  --animate-rise-in: rise-in 700ms ease-out both;
+  --animate-fade-in: fade-in 600ms ease-out both;
+
+  @keyframes rise-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+  }
 }
 
 @layer base {

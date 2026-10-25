@@ -165,11 +165,13 @@ The fake repositories are test doubles for unit tests. The running app always us
 ```
 frontend/src/
 ├── app/                App.tsx (routes), providers.tsx, layouts/
+│   └── layouts/        SiteHeader
 ├── shared/
 │   ├── ui/             Button, Input, Select, Card, Badge, Dialog, Skeleton (design system primitives)
 │   └── lib/            api.ts (fetch wrapper: base URL, token, error shape), format.ts (currency)
 ├── features/
 │   ├── auth/           AuthProvider, useAuth, LoginPage, RegisterPage, RequireAuth, RequireAdmin
+│   ├── landing/        LandingPage (public, no API calls)
 │   ├── vehicles/       ShowroomPage, VehicleCard, SearchBar, hooks, api
 │   ├── deals/          DealBadge, useDealRatings
 │   ├── finance/        emi.ts (pure function), EmiCalculator
