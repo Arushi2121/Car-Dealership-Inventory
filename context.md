@@ -159,6 +159,7 @@ If Docker is not available, Supabase hosted Postgres replaces it, used as a data
 - **Message**: a subject under 72 characters. The body says what was done and what the AI did.
 - **Trailer**: AI-assisted commits end with the trailer from Section 1.
 - **History**: never squash, rebase away or force-push.
+- **Trailer**: Owner decision: commits do not carry the Co-authored-by trailer, because the brief's noreply address links to an unrelated GitHub user. AI involvement is disclosed in README "My AI Usage" and PROMPTS.md instead. Do not propose the trailer.
 
 ### Definition of done for a block
 - [ ] Red commit with failing tests (where the block has logic)

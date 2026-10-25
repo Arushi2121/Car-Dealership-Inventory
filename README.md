@@ -144,9 +144,30 @@ Some places where Cursor caught a problem instead of following the prompt litera
 - **A wrong EMI figure in a prompt**: the RED prompt for the EMI calculator gave an expected monthly payment of 45088 cents. Cursor checked it against the amortization formula, got 45085, wrote the test against the formula, and flagged the difference.
 - **The production build excluding tests**: red commits failed to deploy on Vercel because the build type-checked tests that import modules not yet written. Cursor split the TypeScript config so the build checks only app code while `npm run typecheck` still checks the tests, and verified it with a throwaway red test ([tradeoffs.md](tradeoffs.md), entry 46).
 
+**Decisions I made**
+
+- **Architecture goal.** Before any code, I required every feature to be isolated so a change in one couldn't break another. That became the feature-module structure, and the rule that the vehicles feature never imports admin.
+- **Process documents.** I set up `context.md` (hard rules from the brief, read by Cursor before every task), `architecture.md` and `tradeoffs.md`, so decisions were written down rather than left inside chats.
+- **Database.** With no Docker available, I chose Supabase as the database only, with separate `dev`, `test` and `prod` schemas, and kept auth in our own API as the brief requires.
+- **Design direction.** I rejected the first dark "Midnight Motors" direction as too basic, used premium automotive sites as references for a light, photo-led editorial style, and renamed the product Marque.
+- **Photography.** I sourced the photos and chose the hero image for how it would sit with the layout; I also set the rule that no text may overlap the car at any screen size.
+- **Scope.** I cut orders history, natural-language search and an MCP server to protect the core within one day, but overrode the advice to make deployment optional: it had to ship.
+- **Demo access.** I chose real authentication with seeded demo accounts and one-click demo buttons, so reviewers can test both roles.
+- **Review and git.** I reviewed every Cursor step before committing, answered its design questions (header placement, test formatting), committed red and green separately, and debugged the deployment and git problems along the way.
+
+**Commit attribution**
+
+Most commits were AI-assisted, as described above. I removed the `Co-authored-by` trailers because the `AI@users.noreply.github.com` address in the brief's format links to an unrelated GitHub user, who was then shown as a contributor to this repository. The full AI involvement is disclosed in this section and in the raw logs in [PROMPTS.md](PROMPTS.md).
+
 ### Reflection
 
-<!-- Owner to write: 4-6 sentences on what AI sped up, where it was wrong, and what you decided yourself -->
+The biggest change for me was moving from writing code to directing it. Splitting every block into a RED prompt and a GREEN prompt, and making Cursor stop in between, kept the tests honest; when it did both at once, the red step disappeared. AI was fastest at the parts I'd normally grind through, like test scaffolding, API plumbing and config, and it caught real mistakes, including a wrong EMI figure in one of my own prompts and a Zod 4 default that would have broken purchases with no request body.
+
+It was weakest on judgement. The first design it produced was dark and generic, and I threw it out for a lighter, photo-led direction. Its hero layout ran the headline straight across the car, so I set a rule that no text may overlap the photo at any screen size. I also overruled the suggestion to treat deployment as optional.
+
+Most of my mistakes were process, not code. I ran `git add .` inside `backend/` and committed only half a block without noticing, until the live site showed an old page. Red commits broke the Vercel build until we excluded tests from it. I pasted a database URL into a chat and had to rotate the password. And the noreply address in the co-author format credited a stranger as a contributor.
+
+Next time I'd deploy on day one, commit from the repo root every time, and keep secrets out of every chat from the start.
 
 The raw chat logs are in [PROMPTS.md](PROMPTS.md).
 
