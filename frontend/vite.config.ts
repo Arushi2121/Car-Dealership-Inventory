@@ -11,6 +11,11 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['src/test/setup.ts'],
     globals: true,
+    coverage: {
+      provider: 'v8',
+      include: ['src/**/*.{ts,tsx}'],
+      exclude: ['src/main.tsx', 'src/test/**'],
+    },
     env: {
       VITE_API_URL: 'http://localhost:4000',
       VITE_DEMO_USER_EMAIL: 'demo.customer@marque.test',
