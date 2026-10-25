@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router';
+import { StyleguidePage } from './StyleguidePage';
 
 function PlaceholderHome() {
   return (
@@ -13,6 +14,7 @@ export function App() {
   return (
     <Routes>
       <Route path="/" element={<PlaceholderHome />} />
+      {import.meta.env.DEV && <Route path="/styleguide" element={<StyleguidePage />} />}
     </Routes>
   );
 }
