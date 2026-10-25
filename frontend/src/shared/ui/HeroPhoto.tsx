@@ -11,7 +11,7 @@ export function HeroPhoto({ className = '' }: { className?: string }) {
           src="/images/hero.jpg"
           alt=""
           onError={() => setFailed(true)}
-          className="size-full object-cover object-center"
+          className="size-full object-cover object-[center_55%]"
         />
       )}
     </div>

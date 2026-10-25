@@ -16,7 +16,7 @@ export function App() {
           path="/"
           element={
             <>
-              <SiteHeader transparent />
+              <SiteHeader overlay />
               <LandingPage />
             </>
           }

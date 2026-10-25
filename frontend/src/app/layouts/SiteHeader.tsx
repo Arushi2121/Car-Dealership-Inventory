@@ -5,8 +5,8 @@ import { buttonClasses } from '../../shared/ui';
 
 const navLinkClasses = 'text-sm font-medium text-ink hover:text-ink/70';
 
-/** `transparent` is for pages that start with a full-bleed hero under the header. */
-export function SiteHeader({ transparent = false }: { transparent?: boolean }) {
+/** `overlay` floats the header over the page, for pages whose top padding already clears it. */
+export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
   const { user, logout } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -20,8 +20,8 @@ export function SiteHeader({ transparent = false }: { transparent?: boolean }) {
 
   const background = scrolled
     ? 'bg-canvas/80 backdrop-blur border-b border-line'
-    : transparent
-      ? 'bg-transparent'
+    : overlay
+      ? 'bg-canvas/80 backdrop-blur'
       : 'bg-canvas';
 
   const links = (
@@ -49,7 +49,7 @@ export function SiteHeader({ transparent = false }: { transparent?: boolean }) {
 
   return (
     <header
-      className={`${transparent ? 'fixed' : 'sticky'} inset-x-0 top-0 z-50 transition-colors duration-200 ${background}`}
+      className={`${overlay ? 'fixed' : 'sticky'} inset-x-0 top-0 z-50 transition-colors duration-200 ${background}`}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         <Link to="/" className="font-display text-2xl font-semibold text-ink">

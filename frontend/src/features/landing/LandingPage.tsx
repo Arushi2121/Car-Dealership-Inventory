@@ -15,16 +15,32 @@ export function LandingPage() {
 
   return (
     <>
-      <section className="relative isolate min-h-[88vh] overflow-hidden">
-        <HeroPhoto className="absolute inset-0 -z-10" />
-        <div className="absolute inset-x-0 bottom-0 -z-10 h-1/5 bg-linear-to-b from-canvas/0 to-canvas/70" />
-        <div className="mx-auto max-w-3xl px-6 pt-32 text-center motion-safe:animate-rise-in md:pt-40">
+      {/* Text sits above and below the photo, never on it, so it stays readable at every width. */}
+      <section className="bg-canvas">
+        <div className="mx-auto max-w-4xl px-6 pt-28 text-center motion-safe:animate-rise-in md:pt-36">
           <p className="text-sm font-medium text-ink/70">Marque · Curated cars, fairly priced</p>
-          <h1 className="mt-4 font-display text-5xl text-ink md:text-7xl">Cars worth the drive.</h1>
-          <p className="mx-auto mt-5 max-w-xl text-lg text-muted">
+          <h1 className="mt-4 font-display text-5xl leading-tight text-ink md:text-7xl">
+            Cars worth the drive.
+          </h1>
+        </div>
+
+        <div className="relative mt-8 aspect-4/3 w-full overflow-hidden motion-safe:animate-fade-in md:aspect-21/9">
+          <HeroPhoto className="absolute inset-0" />
+          <div
+            aria-hidden="true"
+            className="absolute inset-x-0 top-0 h-1/4 bg-linear-to-b from-canvas to-canvas/0"
+          />
+          <div
+            aria-hidden="true"
+            className="absolute inset-x-0 bottom-0 h-1/5 bg-linear-to-b from-canvas/0 to-canvas"
+          />
+        </div>
+
+        <div className="mx-auto max-w-2xl px-6 pb-20 text-center">
+          <p className="text-lg text-muted md:text-xl">
             Every car rated against its market, so you know a good deal when you see one.
           </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
+          <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Link to="/showroom" className={buttonClasses('primary', 'lg')}>
               Browse the showroom
             </Link>
